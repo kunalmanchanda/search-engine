@@ -1,15 +1,21 @@
 'use client';
 
 import { Loader2, Search } from 'lucide-react';
-import { useRef, useState, useTransition } from 'react';
 import { useRouter, useSearchParams } from 'next/navigation';
+import { Suspense, useRef, useState, useTransition } from 'react';
 
 import { Input } from './ui/input';
 import { Button } from './ui/button';
 
-const SearchBar = () => {
+const SearchBar = () => (
+  <Suspense fallback={<div>Loading...</div>}>
+    <SearchBarComponent />
+  </Suspense>
+);
+
+const SearchBarComponent = () => {
   const searchParams = useSearchParams();
-  const defaultQuery = searchParams.get('query') || '';
+  const defaultQuery = searchParams?.get('query') || '';
   const inputRef = useRef<HTMLInputElement>(null);
   const [isSearching, startTransition] = useTransition();
   const router = useRouter();
